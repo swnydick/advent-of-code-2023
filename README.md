@@ -13,6 +13,6 @@ My restrictions this year are simple. Write my solution in R without using any b
 1. Are installed with base R: `base`, `complier`, `datasets`, `grDevices`, `graphics`, `grid`, `methods`, `parallel`, `splines`, `stats`, `stats4`, `tcltk`, `tools`, `translations`, `utils`.
 2. Are included with the default binary distributions: `KernSmooth`, `MASS`, `Matrix`, `boot`, `class`, `cluster`, `codetools`, `foreign`, `lattice`, `mgcv`, `nlme`, `nnet`, `rpart`, `spatial`, `survival`.
 
-Moreover, I will only try to use packages from the second set (especially `MASS` and `Matrix`) if I cannot solve the problem with packages from the first set (generally `base` and `stats`). And even if I violate 1 and 2, I cannot use packages from the `tidyverse`. The `renv` package will enforce those constraints, as no other packages will be included in `renv.lock`.
+Moreover, I will only try to use packages from the second set (especially `MASS` and `Matrix`) if I cannot solve the problem with packages from the first set (generally `base` and `stats`). And even if I violate 1 and 2, I cannot use packages from the `tidyverse`. The `renv` package will enforce those constraints, as no other packages will be included in `renv.lock`. Finally, as per the suggestions from the official [2023 instructions](https://adventofcode.com/about#faq_ai_leaderboard), I will not use AI help to solve any of the puzzles in the rare case that I solve them quickly. Moreover, Github Copilot in RStudio has been disabled for this project!
 
 # Completed Puzzles
