@@ -18,40 +18,23 @@ find_color_max <- function(x,
   # find the number with the color after it
   counts <- regmatches(
     x = x,
-    m = regexpr(
+    m = gregexpr(
       text    = x,
-      pattern = paste0("[0-9]+ (?=", type, ")"),
+      pattern = paste0("[0-9]+(?= ", type, ")"),
       perl    = TRUE
     )
   )
 
   # find the max value for the number (needs to be less than)
-  max(as.numeric(counts), 0)
-}
-
-find_all_color_max <- function(x,
-                               type = "green"){
-
-  # repeat across all and return numeric
-  vapply(X         = x,
-         FUN       = find_color_max,
-         FUN.VALUE = numeric(1),
-         type      = type)
+  sapply(counts, \(x) max(as.numeric(x)))
 }
 
 # 3. Part 1 ====================================================================
 
-# determine the sets within the games
-games     <- gsub(x           = inp,
-                  pattern     = "Game .*\\:",
-                  replacement = "")
-games     <- strsplit(x     = games,
-                      split = ";")
-
 # find the maximum observed and allowed values for each set within each game
 max_obs <- lapply(X   = c("red", "green", "blue"),
-                  FUN = find_all_color_max,
-                  x   = games)
+                  FUN = find_color_max,
+                  x   = inp)
 max_alw <- c(12, 13, 14)
 
 # flag where we have enough for all colors
