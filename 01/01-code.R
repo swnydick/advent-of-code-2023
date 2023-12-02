@@ -72,7 +72,7 @@ last_num    <- rev_str(last_num)
 
 # combining the digits and replacing the spelled numbers
 comb_num    <- list(first = first_num,
-                    last = last_num)
+                    last  = last_num)
 comb_num    <- lapply(
   X   = comb_num,
   FUN = function(n){
