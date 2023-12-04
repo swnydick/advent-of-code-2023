@@ -17,9 +17,7 @@ find_card_numbers <- function(x){
 }
 
 count_card_matches <- function(x){
-  count <- sum(x[[2]] %in% x[[1]], na.rm = TRUE)
-  count[count == 0] <- NA
-  count
+  sum(x[[2]] %in% x[[1]], na.rm = TRUE)
 }
 
 # 3. Part 1 ====================================================================
@@ -39,7 +37,7 @@ n_matches <- vapply(X   = sep_cards,
                     FUN.VALUE = numeric(1))
 
 # based on count_card_matches, cards with 0 are NA to make it easier to count
-sum(2^(n_matches - 1), na.rm = TRUE)
+sum(2^(n_matches - 1)[n_matches > 0], na.rm = TRUE)
 
 # 4. Part 2 ====================================================================
 
@@ -50,20 +48,15 @@ n_o <- n_matches
 n   <- length(n_o)
 n_c <- rep(1, n)
 
-for(i in seq_len(n - 1)){
+for(card_idx in seq_len(n - 1)){
 
   # start with the count (these indicates the seq of cards that are won)
-  n_i       <- n_o[i]
+  this_n_o     <- n_o[card_idx]
 
-  # if we didn't win any cards we don't need to update the copies
-  if(is.na(n_i) || n_i == 0){
-    next;
-  }
-
-  # - indicate the sequence of card copies (based on n_i)
+  # - indicate the slice/sequence of card copies (based on n_i)
   # - update the number of copies for each card in that sequence
-  sl_i      <- i + 1:min(n_i, n)
-  n_c[sl_i] <- n_c[sl_i] + n_c[i]
+  this_sl      <- card_idx + seq_len(min(this_n_o, n))
+  n_c[this_sl] <- n_c[this_sl] + n_c[card_idx]
 }
 
 # add all of the copies up!
