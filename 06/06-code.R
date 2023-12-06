@@ -19,16 +19,27 @@ process_line <- function(x){
   setNames(vl, nm)
 }
 
-# note: you really only need to do time / 2 because it's symmetric
+## A. Brute Force --------------------------------------------------------------
+
+# note: you can use quadratic formula as well!
 find_log_dist_by_speed <- function(time){
   speed <- log(0:time)
   speed + rev(speed)
 }
 
-# taking logs AND subtracting from N prevents overflow
-count_winning_speeds <- function(time, best_dist){
+count_winning_speeds_bf <- function(time, best_dist){
   cur_log_dist <- find_log_dist_by_speed(time)
   length(cur_log_dist) - sum(cur_log_dist <= log(best_dist))
+}
+
+## B. Quadratic Formula --------------------------------------------------------
+
+count_winning_speeds_qf <- function(time, best_dist){
+  # formula: t * (n - t) = dist
+  # -> -t^2 + time * t - dist = 0
+  # -> [-time +/- sqrt(time^2 - 4*dist) / [-2]
+  x <- (time + c(-1, 1) * sqrt(time^2 - 4 * best_dist)) / 2
+  floor(max(x)) - ceiling(min(x)) + 1
 }
 
 # 3. Part 1 ====================================================================
@@ -42,8 +53,9 @@ goals <- do.call(
   )
 )
 
-# count winning speeds for each dist
-prod(mapply(count_winning_speeds, goals$time, goals$distance))
+# count winning speeds for each dist (using both methods)
+prod(mapply(count_winning_speeds_bf, goals$time, goals$distance))
+prod(mapply(count_winning_speeds_qf, goals$time, goals$distance))
 
 # 4. Part 2 ====================================================================
 
@@ -54,5 +66,7 @@ new_goal <- sapply(X   = goals,
             as.numeric()
 
 # count the winning speeds (taking logs prevents overflow!)
-count_winning_speeds(time      = new_goal[1],
-                     best_dist = new_goal[2])
+count_winning_speeds_bf(time      = new_goal[1],
+                        best_dist = new_goal[2])
+count_winning_speeds_qf(time      = new_goal[1],
+                        best_dist = new_goal[2])
