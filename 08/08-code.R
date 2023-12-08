@@ -43,6 +43,7 @@ parse_map <- function(x){
     )
   )
 
+  # putting everything as a matrix to make it faster
   setNames(object = lapply(map_next, c),
            nm     = map_cur) |>
   do.call(what = rbind,
@@ -54,7 +55,8 @@ parse_map <- function(x){
 
 ## A. Functions ----------------------------------------------------------------
 
-rotate_vector     <- function(x, n = 0){
+# function to rotate vector if we start in different locations (not needed)
+rotate_vector <- function(x, n = 0){
   rng <- length(x)
   n   <- n - 1
   x[1 + (rng + (seq_along(x) + n) %% rng) %% rng]
@@ -71,11 +73,12 @@ find_camel_steps <- function(steps,
   steps     <- rotate_vector(steps)
 
   # indicate the temporary variables
-  next_loc  <- first
-  cur_iter  <- 0
-  end_loop  <- FALSE
-  step_seq  <- first
+  next_loc  <- first  # the next place we iterate to
+  cur_iter  <- 0      # the current interation
+  end_loop  <- FALSE  # whether we leave the loop
+  step_seq  <- first  # the current sequence in the step
 
+  # update the location and determine if it matches the end point
   while(!end_loop){
     cur_iter               <- cur_iter + 1
     cur_step               <- steps[(cur_iter - 1) %% n + 1]
@@ -84,6 +87,7 @@ find_camel_steps <- function(steps,
     end_loop               <- next_loc == last
   }
 
+  # return the sequence
   step_seq
 }
 
@@ -101,6 +105,7 @@ all_steps <- find_camel_steps(
   last  = "ZZZ"
 )
 
+# count up and remove the starting point
 length(all_steps) - 1
 
 # 4. Part 2 ====================================================================
@@ -117,7 +122,7 @@ lcm <- function(x, y){
   (abs(x) * abs(y)) / gcd(x, y)
 }
 
-# the trick is that these are closed loops
+# the trick is that these are closed loops with no shift to start
 find_camel_loops <- function(steps,
                              maps,
                              start = "ZZZZZ"){
@@ -159,3 +164,6 @@ Reduce(f = lcm,
 #    ZZZZZ is located)
 # - the result turned out to be the simple way, so i didn't extend this to be
 #   more complicated!
+
+# for the more complicated way we would need to use the CRT and check loop
+# length/consistency!
