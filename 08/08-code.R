@@ -145,8 +145,8 @@ end_loc  <- grep(
 # find the lengths of the loops
 loop_seq <- find_camel_loops(steps = steps,
                              maps  = maps,
-                             start = all_end)
-loop_len <- lengths(loops) - 1
+                             start = end_loc)
+loop_len <- lengths(loop_seq) - 1
 
 # find the least common multiple of the lengths
 Reduce(f = lcm,
