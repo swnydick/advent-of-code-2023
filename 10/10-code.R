@@ -275,10 +275,25 @@ flood_pipes <- function(pipes){
 move_grid <- expand.grid(r = -1:1, c = -1:1) |>
              subset(r != 0 | c != 0)
 
-print_loop <- function(x){
-  x <- paste(apply(x, 1, paste, collapse = ""), collapse = "\n")
-  sink(file = "~/Desktop/zzz.txt")
+## C. Part 3 -------------------------------------------------------------------
 
+# this is a cheat to part two based on a reddit post
+find_inside_count <- function(pipes){
+
+  loop_mark   <- find_pipe_loop(pipes)$pipes
+
+  # find the idx of the rows and columns
+  row_idx     <- seq_len(nrow(loop_mark))
+  col_idx     <- seq_len(ncol(loop_mark))
+
+  # cut off the 25% on each edge
+  row_idx_a   <- row_idx[rep(1:4, each = length(row_idx) / 4) %in% 2:3]
+  col_idx_a   <- col_idx[rep(1:4, each = length(col_idx) / 4) %in% 2:3]
+
+  # update to have new loop mark
+  loop_mark_a <- loop_mark[row_idx_a, col_idx_a]
+
+  sum(loop_mark_a != "B")
 }
 
 
@@ -296,4 +311,8 @@ pipe_loop$count / 2
 
 pipe_mark <- flood_pipes(pipes)
 
+# doesn't work
 sum(pipe_mark != "O" & pipe_mark != "B")
+
+# does work
+find_inside_count(pipes)
