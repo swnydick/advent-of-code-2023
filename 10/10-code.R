@@ -156,13 +156,16 @@ flood_pipes <- function(pipes){
 
     # adjust the index based on flags and direction of travel
     find_idx(rw, cl)
-    # idx <- Map(f    = adjust_idx,
-    #            idx  = find_idx(rw, cl),
-    #            mv_r = gr$r,
-    #            mv_c = gr$c,
-    #            adj  = list(c(-1, 1)))
+
+    # this SHOULD adjust the indices to account for leaking but it doesn't work!
+    idx <- Map(f    = adjust_idx,
+               idx  = find_idx(rw, cl),
+               mv_r = gr$r,
+               mv_c = gr$c,
+               adj  = list(c(-1, 1)))
   }
 
+  # this SHOULD adjust the indices to account for leaking but it doesn't work!
   # fct: adjust idx if we are in a border BUT if we can adjust
   adjust_idx <- function(idx,
                          mv_r,
@@ -183,16 +186,16 @@ flood_pipes <- function(pipes){
     if(mv_r != 0){
       pipe_m1 <- pull_pipe(rw, cl - 1)
       pipe_p1 <- pull_pipe(rw, cl + 1)
-      if(pipe_0 %in% c("|", "L", "F") && -1 %in% adj){
-        if(pipe_m1 %in% c("|", "J", "7")){
+      if(pipe_0 %in% c("|", "L", "F", "S") && -1 %in% adj){
+        if(pipe_m1 %in% c("|", "J", "7", "S")){
           if(pipe_mark[rw, cl - 1] == "B"){
             new_idx <- c(new_idx, find_idx(rw + mv_r, cl))
             new_adj <- c(new_adj, -1)
           }
         }
       }
-      if(pipe_0 %in% c("|", "J", "7") && +1 %in% adj){
-        if(pipe_p1 %in% c("|", "L", "F")){
+      if(pipe_0 %in% c("|", "J", "7", "S") && +1 %in% adj){
+        if(pipe_p1 %in% c("|", "L", "F", "S")){
           if(pipe_mark[rw, cl + 1] == "B"){
             new_idx <- c(new_idx, find_idx(rw + mv_r, cl))
             new_adj <- c(new_adj, +1)
@@ -203,16 +206,16 @@ flood_pipes <- function(pipes){
     if(mv_c != 0){
       pipe_m1 <- pull_pipe(rw - 1, cl)
       pipe_p1 <- pull_pipe(rw + 1, cl)
-      if(pipe_0 %in% c("-", "7", "F") && -1 %in% adj){
-        if(pipe_m1 %in% c("-", "J", "L")){
+      if(pipe_0 %in% c("-", "7", "F", "S") && -1 %in% adj){
+        if(pipe_m1 %in% c("-", "J", "L", "S")){
           if(pipe_mark[rw - 1, cl] == "B"){
             new_idx <- c(new_idx, find_idx(rw, cl + mv_c))
             new_adj <- c(new_adj, -1)
           }
         }
       }
-      if(pipe_0 %in% c("-", "J", "L") && +1 %in% adj){
-        if(pipe_p1 %in% c("-", "7", "F")){
+      if(pipe_0 %in% c("-", "J", "L", "S") && +1 %in% adj){
+        if(pipe_p1 %in% c("-", "7", "F", "S")){
           if(pipe_mark[rw + 1, cl] == "B"){
             new_idx <- c(new_idx, find_idx(rw, cl + mv_c))
             new_adj <- c(new_adj, +1)
