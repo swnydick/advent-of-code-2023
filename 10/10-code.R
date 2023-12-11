@@ -189,16 +189,16 @@ flood_pipes <- function(pipes){
       if(pipe_0 %in% c("|", "L", "F", "S") && -1 %in% adj){
         if(pipe_m1 %in% c("|", "J", "7", "S")){
           if(pipe_mark[rw, cl - 1] == "B"){
-            new_idx <- c(new_idx, find_idx(rw + mv_r, cl))
-            new_adj <- c(new_adj, -1)
+            new_idx <- c(new_idx, find_idx(rw + mv_r, cl), find_idx(rw + mv_r, cl - 1))
+            new_adj <- c(new_adj, -1, +1)
           }
         }
       }
       if(pipe_0 %in% c("|", "J", "7", "S") && +1 %in% adj){
         if(pipe_p1 %in% c("|", "L", "F", "S")){
           if(pipe_mark[rw, cl + 1] == "B"){
-            new_idx <- c(new_idx, find_idx(rw + mv_r, cl))
-            new_adj <- c(new_adj, +1)
+            new_idx <- c(new_idx, find_idx(rw + mv_r, cl), find_idx(rw + mv_r, cl + 1))
+            new_adj <- c(new_adj, +1, -1)
           }
         }
       }
@@ -209,16 +209,16 @@ flood_pipes <- function(pipes){
       if(pipe_0 %in% c("-", "7", "F", "S") && -1 %in% adj){
         if(pipe_m1 %in% c("-", "J", "L", "S")){
           if(pipe_mark[rw - 1, cl] == "B"){
-            new_idx <- c(new_idx, find_idx(rw, cl + mv_c))
-            new_adj <- c(new_adj, -1)
+            new_idx <- c(new_idx, find_idx(rw, cl + mv_c), find_idx(rw - 1, cl + mv_c))
+            new_adj <- c(new_adj, -1, +1)
           }
         }
       }
       if(pipe_0 %in% c("-", "J", "L", "S") && +1 %in% adj){
         if(pipe_p1 %in% c("-", "7", "F", "S")){
           if(pipe_mark[rw + 1, cl] == "B"){
-            new_idx <- c(new_idx, find_idx(rw, cl + mv_c))
-            new_adj <- c(new_adj, +1)
+            new_idx <- c(new_idx, find_idx(rw, cl + mv_c), find_idx(rw + 1, cl + mv_c))
+            new_adj <- c(new_adj, +1, -1)
           }
         }
       }
